@@ -35,14 +35,13 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Container(
-                  width: 350,
+                  width: 330,
                   child: TextFormField(
                     decoration: InputDecoration(
                       hintText: "Pesquisa por cidades..."
                     ),
                   ),
                 ),
-                SizedBox(width: 26,),
                 FloatingActionButton(onPressed: () {}, child: Icon(Icons.search),)
               ],
             ),

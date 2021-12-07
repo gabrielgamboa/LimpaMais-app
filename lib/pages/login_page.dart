@@ -49,7 +49,7 @@ class _LoginPageState extends State<LoginPage> {
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         child: Image.asset(
-          "assets/images/background.jpg",
+          "assets/images/background.png",
           fit: BoxFit.fill,
         ),
       ),
@@ -66,12 +66,12 @@ class _LoginPageState extends State<LoginPage> {
               children: [
                 Container(
                     width: 300,
-                    height: 170,
-                    child: Image.asset('assets/images/Nubank_logo.png')),
+                    height: 250,
+                    child: Image.asset('assets/images/logo.png')),
                 Form(
                   key: _formKey,
                   child: Container(
-                    padding: const EdgeInsets.all(12.0),
+                    padding: const EdgeInsets.all(24.0),
                     child: Column(
                       children: [
                         //passa o nextFocus indicando qual foco ir
