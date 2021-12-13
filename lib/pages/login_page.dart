@@ -87,7 +87,6 @@ class _LoginPageState extends State<LoginPage> {
                         // passa o focusNode o seu foco
                         AppText("Senha",
                             controller: _tPassword,
-                            keyboardType: TextInputType.number,
                             focusNode: _focusSenha,
                             validator: _validatePassword,
                             password: true),

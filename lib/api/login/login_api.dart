@@ -7,7 +7,7 @@ class LoginApi {
   static Future<ApiResponse<User>> login(String email, String password) async {
     try {
       Uri url =
-          Uri.parse('http://localhost:3333/users/login');
+          Uri.parse('http://10.0.2.2:3333/users/login');
 
       Map<String, String> headers = {"Content-type": "application/json"};
 
