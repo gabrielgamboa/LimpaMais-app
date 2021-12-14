@@ -7,16 +7,16 @@ class User {
   String? name;
   String? email;
   String? phone;
-  // String? urlPhoto;
+  String? urlPhoto;
 
-  User({this.id, this.name, this.email, this.phone/*, this.urlPhoto */});
+  User({this.id, this.name, this.email, this.phone, this.urlPhoto});
 
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     email = json['email'];
     phone = json['phone'];
-    // urlPhoto = json['urlFoto'];
+    urlPhoto = json['url_photo'];
   }
 
   Map<String, dynamic> toJson() {
@@ -25,7 +25,7 @@ class User {
     data['name'] = this.name;
     data['email'] = this.email;
     data['phone'] = this.phone;
-    // data['urlPhoto'] = this.urlPhoto;
+    data['url_photo'] = this.urlPhoto;
     return data;
   }
 

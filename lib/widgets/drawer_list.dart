@@ -60,8 +60,7 @@ class DrawerList extends StatelessWidget {
       accountName: Text(user.name!),
       accountEmail: Text(user.email!),
       currentAccountPicture: CircleAvatar(
-        // backgroundImage: user.urlPhoto == null ? NetworkImage(defaultUserProfilePic) : NetworkImage(user.urlPhoto!),
-        backgroundImage: NetworkImage(defaultUserProfilePic),
+        backgroundImage: user.urlPhoto == null ? NetworkImage(defaultUserProfilePic) : NetworkImage(user.urlPhoto!),
       ),
     );
   }

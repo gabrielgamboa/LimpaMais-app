@@ -1,5 +1,6 @@
 import 'package:limpamais_application/api/diarist/diarist_api.dart';
 import 'package:limpamais_application/pages/diarist/diarist_details.dart';
+import 'package:limpamais_application/utils/defaultUserProfilePic.dart';
 import 'package:limpamais_application/utils/nav.dart';
 import 'package:limpamais_application/widgets/drawer_list.dart';
 import 'package:limpamais_application/models/diarist.dart';
@@ -91,7 +92,7 @@ class _HomePageState extends State<HomePage> {
               child: Container(
                 padding: EdgeInsets.all(16),
                 child: ListTile(
-                  leading: Image.asset("assets/images/avatar.png"),
+                  leading: diarist.urlPhoto == null ? Image.network(defaultUserProfilePic) : Image.network(diarist.urlPhoto!),
                   title: Text(diarist.name!),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,

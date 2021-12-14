@@ -9,6 +9,7 @@ class Diarist {
   String? state;
   int? dailyRate;
   String? password;
+  String? urlPhoto;
 
   Diarist(
       {
@@ -21,7 +22,8 @@ class Diarist {
       this.city,
       this.state,
       this.dailyRate,
-      this.password});
+      this.password,
+      this.urlPhoto});
 
   Diarist.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -34,6 +36,7 @@ class Diarist {
     state = json['state'];
     dailyRate = json['daily_rate'];
     password = json['password'];
+    urlPhoto = json['url_photo'];
   }
 
   Map<String, dynamic> toJson() {
@@ -48,6 +51,7 @@ class Diarist {
     data['state'] = this.state;
     data['daily_rate'] = this.dailyRate;
     data['password'] = this.password;
+    data['url_photo'] = this.urlPhoto;
     return data;
   }
 }
