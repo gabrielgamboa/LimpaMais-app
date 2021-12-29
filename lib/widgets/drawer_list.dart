@@ -1,6 +1,5 @@
 import 'package:limpamais_application/models/user.dart';
 import 'package:limpamais_application/pages/login_page.dart';
-import 'package:limpamais_application/utils/defaultUserProfilePic.dart';
 import 'package:limpamais_application/utils/nav.dart';
 import 'package:flutter/material.dart';
 
@@ -56,11 +55,12 @@ class DrawerList extends StatelessWidget {
   }
 
   UserAccountsDrawerHeader _drawerHeader(User user) {
+    print(user.urlPhoto);
     return UserAccountsDrawerHeader(
       accountName: Text(user.name!),
       accountEmail: Text(user.email!),
       currentAccountPicture: CircleAvatar(
-        backgroundImage: user.urlPhoto == null ? NetworkImage(defaultUserProfilePic) : NetworkImage(user.urlPhoto!),
+        backgroundImage: user.urlPhoto!.isEmpty ? NetworkImage("https://www.pikpng.com/pngl/m/80-805523_default-avatar-svg-png-icon-free-download-264157.png") : NetworkImage(user.urlPhoto!),
       ),
     );
   }
