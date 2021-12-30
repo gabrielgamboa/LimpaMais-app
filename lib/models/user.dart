@@ -7,29 +7,55 @@ class User {
   String? name;
   String? email;
   String? phone;
+  String? street;
+  String? number;
+  String? city;
+  String? state;
+  String? password;
   String? urlPhoto;
 
-  User({this.id, this.name, this.email, this.phone, this.urlPhoto});
+  User(
+      {
+      this.id,
+      this.name,
+      this.email,
+      this.phone,
+      this.street,
+      this.number,
+      this.city,
+      this.state,
+      this.password,
+      this.urlPhoto});
 
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     email = json['email'];
     phone = json['phone'];
+    street = json['street'];
+    number = json['number'];
+    city = json['city'];
+    state = json['state'];
+    password = json['password'];
     urlPhoto = json['url_photo'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = this.id;
     data['name'] = this.name;
     data['email'] = this.email;
     data['phone'] = this.phone;
+    data['street'] = this.street;
+    data['number'] = this.number;
+    data['city'] = this.city;
+    data['state'] = this.state;
+    data['password'] = this.password;
     data['url_photo'] = this.urlPhoto;
     return data;
   }
 
-  static void clear() {
+   static void clear() {
     Prefs.setString("user.prefs", "");
   }
 
@@ -51,3 +77,5 @@ class User {
     return user;
   }
 }
+
+

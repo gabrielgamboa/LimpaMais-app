@@ -6,6 +6,8 @@ import 'package:limpamais_application/models/diarist.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
+
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -22,7 +24,7 @@ class _HomePageState extends State<HomePage> {
   void _loadDiarists() async {
     List<Diarist> diaristsList = await DiaristsApi.getDiarists();
     setState(() {
-      this.diarists = diaristsList;
+      diarists = diaristsList;
     });
   }
 
@@ -40,7 +42,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget _body(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(16.0),
       // padding: EdgeInsets.only(top: 32.0),
       child: Column(
         children: [
@@ -50,16 +52,16 @@ class _HomePageState extends State<HomePage> {
               Container(
                 width: 220,
                 child: TextFormField(
-                  decoration:
-                      InputDecoration(hintText: "Pesquisa por cidades..."),
+                  decoration: const InputDecoration(
+                      hintText: "Pesquisa por cidades..."),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 16,
               ),
               FloatingActionButton(
-                onPressed: () {},
-                child: Icon(Icons.search),
+                onPressed: () => _loadDiarists(),
+                child: const Icon(Icons.search),
               )
             ],
           ),
@@ -71,16 +73,22 @@ class _HomePageState extends State<HomePage> {
 
   Widget _listView() {
     if (diarists == null) {
-      return Container(
-        height: 400,
-        child: Center(
-          child: CircularProgressIndicator(),
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+
+    if (diarists!.isEmpty) {
+      return const Center(
+        child: Text(
+          "Não foram encontradas diaristas.",
+          style: TextStyle(fontSize: 16),
         ),
       );
     }
 
     return Container(
-      padding: EdgeInsets.only(top: 16.0),
+      padding: const EdgeInsets.only(top: 16.0),
       child: ListView.builder(
           itemCount: diarists!.length,
           itemBuilder: (context, index) {
@@ -89,7 +97,7 @@ class _HomePageState extends State<HomePage> {
             return Card(
               color: Colors.grey[100],
               child: Container(
-                padding: EdgeInsets.all(16),
+                padding: const EdgeInsets.all(16),
                 child: ListTile(
                   leading: Image.network(diarist.urlPhoto!),
                   title: Text(diarist.name!),
@@ -97,46 +105,23 @@ class _HomePageState extends State<HomePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text("${diarist.city}, ${diarist.state}"),
-                      SizedBox(height: 12.0,),
+                      const SizedBox(
+                        height: 12.0,
+                      ),
                       Text("R\$ ${diarist.dailyRate}")
                     ],
                   ),
-
                   trailing: Icon(Icons.arrow_forward),
                   onTap: () {
-                    push(context, DiaristDetails(diarist: diarist,));
+                    push(
+                        context,
+                        DiaristDetails(
+                          diarist: diarist,
+                        ));
                   },
                 ),
               ),
             );
-
-            // return Card(
-            //   color: Colors.grey[100],
-            //   child: Container(
-            //     padding: EdgeInsets.all(16),
-            //     child: Row(
-            //       crossAxisAlignment: CrossAxisAlignment.start,
-            //       children: [
-            //         Center(
-            //             child: Image.asset(
-            //           "assets/images/avatar.png",
-            //           width: 50,
-            //         )),
-
-            //         Text(
-            //           diarist.name!,
-            //           maxLines: 1,
-            //           overflow: TextOverflow.ellipsis,
-            //           style: TextStyle(fontSize: 25),
-            //         ),
-            //         Text(
-            //           "descrição",
-            //           style: TextStyle(fontSize: 16),
-            //         ),
-            //       ],
-            //     ),
-            //   ),
-            // );
           }),
     );
   }

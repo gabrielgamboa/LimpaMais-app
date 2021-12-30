@@ -8,6 +8,7 @@ class Diarist {
   String? city;
   String? state;
   int? dailyRate;
+  String? note;
   String? password;
   String? urlPhoto;
 
@@ -22,6 +23,7 @@ class Diarist {
       this.city,
       this.state,
       this.dailyRate,
+      this.note,
       this.password,
       this.urlPhoto});
 
@@ -35,12 +37,13 @@ class Diarist {
     city = json['city'];
     state = json['state'];
     dailyRate = json['daily_rate'];
+    note = json['note'];
     password = json['password'];
     urlPhoto = json['url_photo'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = this.id;
     data['name'] = this.name;
     data['email'] = this.email;
@@ -50,6 +53,7 @@ class Diarist {
     data['city'] = this.city;
     data['state'] = this.state;
     data['daily_rate'] = this.dailyRate;
+    data['note'] = this.note;
     data['password'] = this.password;
     data['url_photo'] = this.urlPhoto;
     return data;

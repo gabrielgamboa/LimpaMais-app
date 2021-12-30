@@ -1,9 +1,12 @@
 import 'package:limpamais_application/models/user.dart';
 import 'package:limpamais_application/pages/login_page.dart';
+import 'package:limpamais_application/pages/user/user_profile.dart';
 import 'package:limpamais_application/utils/nav.dart';
 import 'package:flutter/material.dart';
 
 class DrawerList extends StatelessWidget {
+  late User? user;
+
   @override
   Widget build(BuildContext context) {
     Future<User?> userFuture = User.get();
@@ -16,22 +19,20 @@ class DrawerList extends StatelessWidget {
                 future: userFuture,
                 builder: (context, snapshot) {
                   User? user = snapshot.data as User?;
+                  this.user = user;
                   return user != null ? _drawerHeader(user) : Container();
                 }),
             ListTile(
               leading: Icon(Icons.account_circle),
               title: Text("Meu perfil"),
               trailing: Icon(Icons.arrow_forward),
-              onTap: () {
-                print("1");
-              },
+              onTap: () => _onClickProfile(context),
             ),
             ListTile(
               leading: Icon(Icons.schedule_outlined),
               title: Text("Meus agendamentos"),
               trailing: Icon(Icons.arrow_forward),
               onTap: () {
-                print("1");
               },
             ),
             ListTile(
@@ -39,7 +40,6 @@ class DrawerList extends StatelessWidget {
               title: Text("Avaliações"),
               trailing: Icon(Icons.arrow_forward),
               onTap: () {
-                print("1");
               },
             ),
             ListTile(
@@ -55,7 +55,6 @@ class DrawerList extends StatelessWidget {
   }
 
   UserAccountsDrawerHeader _drawerHeader(User user) {
-    print(user.urlPhoto);
     return UserAccountsDrawerHeader(
       accountName: Text(user.name!),
       accountEmail: Text(user.email!),
@@ -63,6 +62,10 @@ class DrawerList extends StatelessWidget {
         backgroundImage: user.urlPhoto!.isEmpty ? NetworkImage("https://www.pikpng.com/pngl/m/80-805523_default-avatar-svg-png-icon-free-download-264157.png") : NetworkImage(user.urlPhoto!),
       ),
     );
+  }
+
+  void _onClickProfile(BuildContext context) { 
+    push(context, UserProfile(id: user!.id!,));
   }
 
   void _onClickLogout(BuildContext context) {
