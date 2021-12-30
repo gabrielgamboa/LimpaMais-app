@@ -43,7 +43,6 @@ class _HomePageState extends State<HomePage> {
   Widget _body(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16.0),
-      // padding: EdgeInsets.only(top: 32.0),
       child: Column(
         children: [
           Row(
@@ -99,7 +98,7 @@ class _HomePageState extends State<HomePage> {
               child: Container(
                 padding: const EdgeInsets.all(16),
                 child: ListTile(
-                  leading: Image.network(diarist.urlPhoto!),
+                  leading: Image.network(diarist.urlPhoto ?? "https://www.pikpng.com/pngl/m/80-805523_default-avatar-svg-png-icon-free-download-264157.png"),
                   title: Text(diarist.name!),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -111,11 +110,11 @@ class _HomePageState extends State<HomePage> {
                       Text("R\$ ${diarist.dailyRate}")
                     ],
                   ),
-                  trailing: Icon(Icons.arrow_forward),
+                  trailing: const Icon(Icons.arrow_forward),
                   onTap: () {
                     push(
                         context,
-                        DiaristDetails(
+                        DiaristDetailsPage(
                           diarist: diarist,
                         ));
                   },
