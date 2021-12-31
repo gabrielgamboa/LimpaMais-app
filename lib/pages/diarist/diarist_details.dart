@@ -3,7 +3,7 @@ import 'package:limpamais_application/api/diarist/diarist_api.dart';
 import 'package:limpamais_application/models/diarist.dart';
 import 'package:limpamais_application/models/diarist_details.dart';
 import 'package:limpamais_application/models/ratings.dart';
-import 'package:limpamais_application/pages/home_page.dart';
+import 'package:limpamais_application/pages/service/request_appointment.dart';
 import 'package:limpamais_application/utils/nav.dart';
 import 'package:limpamais_application/widgets/app_button.dart';
 import 'package:limpamais_application/widgets/text_info.dart';
@@ -137,7 +137,7 @@ class _DiaristDetailsPageState extends State<DiaristDetailsPage> {
                   height: 10,
                 ),
                 AppButton("Solicitar agendamento",
-                    onPressed: () => push(context, HomePage())),
+                    onPressed: () => push(context, const RequestAppointment())),
               ],
             ),
           )
