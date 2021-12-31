@@ -103,11 +103,11 @@ class _HomePageState extends State<HomePage> {
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("${diarist.city}, ${diarist.state}"),
+                      Text("${diarist.city}, ${diarist.state}", overflow:TextOverflow.ellipsis,),
                       const SizedBox(
                         height: 12.0,
                       ),
-                      Text("R\$ ${diarist.dailyRate}")
+                      Text("R\$${diarist.dailyRate}")
                     ],
                   ),
                   trailing: const Icon(Icons.arrow_forward),
