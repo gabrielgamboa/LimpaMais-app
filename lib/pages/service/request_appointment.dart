@@ -34,14 +34,21 @@ class _RequestAppointmentState extends State<RequestAppointment> {
         title: Text("Solicitar agendamento"),
       ),
       body: Container(
-        padding: EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(18.0),
         child: Column(
           children: [
             Align(alignment: Alignment.centerLeft, child: TextInfo(text: "Selecione o dia desejado", fontSize: 20,),),
-            Row(children: [
-              IconButton(icon: Icon(Icons.calendar_today_outlined), onPressed: () => _selectDate(context), ),
-              Text("${selectedDate}"),
-            ],),
+            // Row(children: [
+            //   IconButton(icon: Icon(Icons.calendar_today_outlined), onPressed: () => _selectDate(context), ),
+            //   Text("${selectedDate}"),
+            // ],),
+            SizedBox(height: 10.0,),
+
+            CalendarDatePicker(
+              initialDate: selectedDate,
+              firstDate: DateTime(2015, 8),
+              lastDate: DateTime(2101), 
+              onDateChanged: (DateTime value) {  },),
             SizedBox(height: 20.0,),
             AppButton("Confirmar solicitação", onPressed: () => const HomePage())
           ],
