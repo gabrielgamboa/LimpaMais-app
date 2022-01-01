@@ -135,8 +135,6 @@ class _LoginPageState extends State<LoginPage> {
     if (response.ok!) {
       User user = response.result;
 
-      print(">>>$user");
-
       push(context, HomePage(), replace: true);
       snackAlert(context, "Bem vindo, ${user.name}!");
     } else {

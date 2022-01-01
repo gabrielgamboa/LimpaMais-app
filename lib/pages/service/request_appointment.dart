@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:limpamais_application/api/api_response.dart';
+import 'package:limpamais_application/api/service/service_api.dart';
 import 'package:limpamais_application/pages/home_page.dart';
+import 'package:limpamais_application/utils/alert.dart';
+import 'package:limpamais_application/utils/nav.dart';
 import 'package:limpamais_application/widgets/app_button.dart';
 import 'package:limpamais_application/widgets/text_info.dart';
 
 class RequestAppointment extends StatefulWidget {
-  const RequestAppointment({ Key? key }) : super(key: key);
+  final int diaristId;
+  final int userId;
+
+  const RequestAppointment({Key? key, required this.diaristId, required this.userId}) : super(key: key);
 
   @override
   _RequestAppointmentState createState() => _RequestAppointmentState();
@@ -13,18 +21,6 @@ class RequestAppointment extends StatefulWidget {
 class _RequestAppointmentState extends State<RequestAppointment> {
   DateTime selectedDate = DateTime.now();
 
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-        context: context,
-        initialDate: selectedDate,
-        firstDate: DateTime(2015, 8),
-        lastDate: DateTime(2101));
-    if (picked != null && picked != selectedDate) {
-      setState(() {
-        selectedDate = picked;
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,23 +33,55 @@ class _RequestAppointmentState extends State<RequestAppointment> {
         padding: EdgeInsets.all(18.0),
         child: Column(
           children: [
-            Align(alignment: Alignment.centerLeft, child: TextInfo(text: "Selecione o dia desejado", fontSize: 20,),),
-            // Row(children: [
-            //   IconButton(icon: Icon(Icons.calendar_today_outlined), onPressed: () => _selectDate(context), ),
-            //   Text("${selectedDate}"),
-            // ],),
-            SizedBox(height: 10.0,),
-
-            CalendarDatePicker(
-              initialDate: selectedDate,
-              firstDate: DateTime(2015, 8),
-              lastDate: DateTime(2101), 
-              onDateChanged: (DateTime value) {  },),
-            SizedBox(height: 20.0,),
-            AppButton("Confirmar solicitação", onPressed: () => const HomePage())
+            Align(
+              alignment: Alignment.centerLeft,
+              child: TextInfo(
+                text: "Selecione o dia desejado",
+                fontSize: 20,
+              ),
+            ),
+            SizedBox(
+              height: 10.0,
+            ),
+            Card(
+              child: CalendarDatePicker(
+                initialDate: selectedDate,
+                firstDate: DateTime(2015, 8),
+                lastDate: DateTime(2101),
+                onDateChanged: (DateTime value) {
+                  setState(() {
+                    selectedDate = value;
+                  });
+                },
+              ),
+            ),
+            SizedBox(
+              height: 20.0,
+            ),
+            AppButton("Confirmar solicitação",
+                onPressed: () => _confirmRequest(context))
           ],
         ),
       ),
     );
+  }
+
+
+
+  void _confirmRequest(BuildContext context) async {
+    //abrir modal dizendo sucesso e retornando pra home
+    DateFormat dateFormat = DateFormat("MM-dd-yyyy");
+    String appointmentDate = dateFormat.format(selectedDate);
+
+    //pegar id e usuario
+
+    ApiResponse response = await ServiceApi.createService(1, 1, appointmentDate);
+
+    if (response.ok!) {
+      alert(context, response.result);
+      push(context, const HomePage());
+    }
+
+
   }
 }
