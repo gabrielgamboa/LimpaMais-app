@@ -14,6 +14,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<Diarist>? diarists;
+  final TextEditingController? _textEditingController = TextEditingController();
 
   @override
   void initState() {
@@ -22,7 +23,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _loadDiarists() async {
-    List<Diarist> diaristsList = await DiaristsApi.getDiarists();
+    List<Diarist> diaristsList = await DiaristsApi.getDiarists(city: _textEditingController?.text);
     setState(() {
       diarists = diaristsList;
     });
@@ -51,6 +52,7 @@ class _HomePageState extends State<HomePage> {
               Container(
                 width: 220,
                 child: TextFormField(
+                  controller: _textEditingController,
                   decoration: const InputDecoration(
                       hintText: "Pesquisa por cidades..."),
                 ),
@@ -59,7 +61,13 @@ class _HomePageState extends State<HomePage> {
                 width: 16,
               ),
               FloatingActionButton(
-                onPressed: () => _loadDiarists(),
+                onPressed: () {
+                  setState(() {
+                    print(_textEditingController?.text);
+                    diarists = null;
+                    _loadDiarists();
+                  });
+                },
                 child: const Icon(Icons.search),
               )
             ],
@@ -124,6 +132,4 @@ class _HomePageState extends State<HomePage> {
           }),
     );
   }
-
-  _onClickCarro(Diarist diarist) {}
 }

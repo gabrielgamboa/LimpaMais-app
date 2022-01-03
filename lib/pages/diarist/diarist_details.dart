@@ -167,16 +167,15 @@ class _DiaristDetailsPageState extends State<DiaristDetailsPage> {
                     children: [
                       TextInfo(text: rating.user!.name!),
                       Row(
-                        children: const [
-                          Icon(Icons.star),
-                          Icon(Icons.star),
-                          Icon(Icons.star),
-                          Icon(Icons.star),
-                          Icon(Icons.star),
-                          SizedBox(
-                            width: 5.0,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Row(
+                            children: [
+                              const Icon(Icons.star),
+                              TextInfo(text: "${rating.rate}"),
+                            ],
                           ),
-                          TextInfo(text: "24/05/2001 13:59:00")
+                          TextInfo(text: "${rating.createdAt}")
                         ],
                       ),
                       TextInfo(text: rating.description!)
