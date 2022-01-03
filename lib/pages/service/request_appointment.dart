@@ -73,9 +73,7 @@ class _RequestAppointmentState extends State<RequestAppointment> {
     DateFormat dateFormat = DateFormat("MM-dd-yyyy");
     String appointmentDate = dateFormat.format(selectedDate);
 
-    //pegar id e usuario
-
-    ApiResponse response = await ServiceApi.createService(1, 1, appointmentDate);
+    ApiResponse response = await ServiceApi.createService(widget.userId, widget.diaristId, appointmentDate);
 
     if (response.ok!) {
       push(context, const HomePage());

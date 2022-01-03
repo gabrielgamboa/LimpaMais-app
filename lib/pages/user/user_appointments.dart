@@ -6,18 +6,21 @@ import 'package:limpamais_application/pages/service/request_appointment.dart';
 import 'package:limpamais_application/utils/nav.dart';
 import 'package:limpamais_application/widgets/app_button.dart';
 import 'package:limpamais_application/widgets/text_info.dart';
+import 'package:intl/intl.dart';
 
 class UserAppointmentsPage extends StatefulWidget {
   final int? userId;
 
-  const UserAppointmentsPage({Key? key, required this.userId}) : super(key: key);
+  const UserAppointmentsPage({Key? key, required this.userId})
+      : super(key: key);
 
   @override
   _UserAppointmentsPageState createState() => _UserAppointmentsPageState();
 }
 
 class _UserAppointmentsPageState extends State<UserAppointmentsPage> {
-  List<UserAppointment>? userAppointments;
+  List<UserAppointment>? userAppointmentsConfirmed;
+  List<UserAppointment>? userAppointmentsToBeConfirmed;
 
   @override
   void initState() {
@@ -26,10 +29,21 @@ class _UserAppointmentsPageState extends State<UserAppointmentsPage> {
   }
 
   void _loadUserAppointments() async {
-    List<UserAppointment>? userAppointmentsInfos = await UserApi.getUserServices(widget.userId!);
+    List<UserAppointment>? userAppointments =
+        await UserApi.getUserServices(widget.userId!);
+
+    List<UserAppointment>? confirmedAppointments = userAppointments
+        .where((userAppointment) =>
+            userAppointment.status!.contains("scheduled and not rated"))
+        .toList();
+
+    List<UserAppointment>? toBeConfirmedAppointments = userAppointments
+        .where((userAppointment) => userAppointment.status!.contains("created"))
+        .toList();
 
     setState(() {
-      userAppointments = userAppointmentsInfos;
+      userAppointmentsConfirmed = confirmedAppointments;
+      userAppointmentsToBeConfirmed = toBeConfirmedAppointments;
     });
   }
 
@@ -45,84 +59,131 @@ class _UserAppointmentsPageState extends State<UserAppointmentsPage> {
   }
 
   Widget _body(BuildContext context) {
-    if (userAppointments == null) {
+    if (userAppointmentsConfirmed == null ||
+        userAppointmentsToBeConfirmed == null) {
       return const Center(
         child: CircularProgressIndicator(),
       );
     }
-
-
-    // return SingleChildScrollView(
-    //   child: Column(
-    //     children: [
-    //       Container(
-    //         width: MediaQuery.of(context).size.width,
-    //         padding:
-    //             const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
-    //         child: Column(
-    //           children: [
-    //             Align(
-    //                 alignment: Alignment.centerLeft,
-    //                 child: Text(
-    //                   "Confirmados:",
-    //                   style: TextStyle(fontSize: 22),
-    //                 )),
-    //             SizedBox(
-    //               height: 5,
-    //             ),
-    //             SizedBox(
-    //               height: 10,
-    //             ),
-                
-    //           ],
-    //         ),
-    //       )
-    //     ],
-    //   ),
-    // );
 
     return Container(
       width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
       child: Column(
         children: [
-          const Text(
-            "Confirmados:",
-            style: TextStyle(fontSize: 22),
+          const Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              "Confirmados:",
+              style: TextStyle(fontSize: 22),
+            ),
           ),
-          ListView.builder(
-              itemCount: userAppointments!.length,
-              itemBuilder: (context, index) {
-                UserAppointment userAppointmentInfos = userAppointments![index];
+          userAppointmentsConfirmed!.isNotEmpty
+              ? Expanded(
+                  child: ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: userAppointmentsConfirmed!.length,
+                      itemBuilder: (context, index) {
+                        UserAppointment userAppointmentInfos =
+                            userAppointmentsConfirmed![index];
 
-                return Card(
-                  color: Colors.grey[100],
-                  child: Container(
-                    padding: const EdgeInsets.all(16),
-                    child: ListTile(
-                      leading: Image.network(userAppointmentInfos.diarist!.urlPhoto ?? "https://www.pikpng.com/pngl/m/80-805523_default-avatar-svg-png-icon-free-download-264157.png"),
-                      title: Text(userAppointmentInfos.diarist!.name!),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("${userAppointmentInfos.diarist!.city}, ${userAppointmentInfos.diarist!.state}", overflow:TextOverflow.ellipsis,),
-                          const SizedBox(
-                            height: 12.0,
+                        return Card(
+                          color: Colors.grey[100],
+                          child: Container(
+                            padding: const EdgeInsets.all(16),
+                            child: ListTile(
+                              leading: Image.network(userAppointmentInfos
+                                      .diarist!.urlPhoto ??
+                                  "https://www.pikpng.com/pngl/m/80-805523_default-avatar-svg-png-icon-free-download-264157.png"),
+                              title: Text(userAppointmentInfos.diarist!.name!),
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "${userAppointmentInfos.diarist!.city}, ${userAppointmentInfos.diarist!.state}",
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  const SizedBox(
+                                    height: 12.0,
+                                  ),
+                                  Text(
+                                      "R\$${userAppointmentInfos.diarist!.dailyRate}")
+                                ],
+                              ),
+                            ),
                           ),
-                          Text("R\$${userAppointmentInfos.diarist!.dailyRate}")
-                        ],
-                      ),
-                      trailing: const Icon(Icons.arrow_forward),
-                      onTap: () {
-                       
-                      },
-                    ),
-                  ),
-                );
-              }),
+                        );
+                      }))
+              : const TextInfo(
+                  text: 'Sem agendamentos confirmados',
+                ),
+          const SizedBox(
+            height: 16,
+          ),
+          const Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              "A confirmar:",
+              style: TextStyle(fontSize: 22),
+            ),
+          ),
+          Expanded(
+              child: userAppointmentsToBeConfirmed!.isNotEmpty
+                  ? ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: userAppointmentsToBeConfirmed!.length,
+                      itemBuilder: (context, index) {
+                        UserAppointment userAppointmentInfos =
+                            userAppointmentsToBeConfirmed![index];
+
+                        final String appointmentDate = _formatAppointmentDate(userAppointmentInfos.appointmentDate!);
+
+                        return Card(
+                          color: Colors.grey[100],
+                          child: Container(
+                            padding: const EdgeInsets.all(16),
+                            child: ListTile(
+                              leading: Image.network(userAppointmentInfos
+                                      .diarist!.urlPhoto ??
+                                  "https://www.pikpng.com/pngl/m/80-805523_default-avatar-svg-png-icon-free-download-264157.png"),
+                              title: Text(userAppointmentInfos.diarist!.name!),
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "${userAppointmentInfos.diarist!.city}, ${userAppointmentInfos.diarist!.state}",
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  const SizedBox(
+                                    height: 12.0,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                          "R\$${userAppointmentInfos.diarist!.dailyRate}"),
+                                      Text(
+                                          appointmentDate),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      })
+                  : const TextInfo(
+                      text: 'Sem agendamentos confirmados',
+                    )),
         ],
       ),
     );
   }
-  
+
+  String _formatAppointmentDate(String data) {
+    final appointmentDate = DateFormat("dd/MM/yyyy")
+        .format(DateTime.parse(data));
+
+    return appointmentDate;
+  }
 }
