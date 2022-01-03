@@ -64,10 +64,7 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                    width: 300,
-                    height: 250,
-                    child: Image.asset('assets/images/logo.png')),
+                Image.asset('assets/images/logo.png', height: 210,),
                 Form(
                   key: _formKey,
                   child: Container(

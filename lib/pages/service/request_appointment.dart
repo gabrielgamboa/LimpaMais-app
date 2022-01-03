@@ -78,8 +78,8 @@ class _RequestAppointmentState extends State<RequestAppointment> {
     ApiResponse response = await ServiceApi.createService(1, 1, appointmentDate);
 
     if (response.ok!) {
-      alert(context, response.result);
       push(context, const HomePage());
+      alert(context, response.result);
     }
 
 

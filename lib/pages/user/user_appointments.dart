@@ -86,7 +86,7 @@ class _UserAppointmentsPageState extends State<UserAppointmentsPage> {
       padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
       child: Column(
         children: [
-          Text(
+          const Text(
             "Confirmados:",
             style: TextStyle(fontSize: 22),
           ),
