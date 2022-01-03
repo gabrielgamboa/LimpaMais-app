@@ -1,5 +1,6 @@
 import 'package:limpamais_application/models/user.dart';
 import 'package:limpamais_application/pages/login_page.dart';
+import 'package:limpamais_application/pages/user/user_appointments.dart';
 import 'package:limpamais_application/pages/user/user_profile.dart';
 import 'package:limpamais_application/utils/nav.dart';
 import 'package:flutter/material.dart';
@@ -32,8 +33,7 @@ class DrawerList extends StatelessWidget {
               leading: Icon(Icons.schedule_outlined),
               title: Text("Meus agendamentos"),
               trailing: Icon(Icons.arrow_forward),
-              onTap: () {
-              },
+              onTap: () => _onClickAppointments(context),
             ),
             ListTile(
               leading: Icon(Icons.star_outline),
@@ -67,6 +67,10 @@ class DrawerList extends StatelessWidget {
 
   void _onClickProfile(BuildContext context) { 
     push(context, UserProfile(id: user!.id!,));
+  }
+
+  void _onClickAppointments(BuildContext context) {
+    push(context, UserAppointmentsPage(userId: user?.id,));
   }
 
   void _onClickLogout(BuildContext context) {

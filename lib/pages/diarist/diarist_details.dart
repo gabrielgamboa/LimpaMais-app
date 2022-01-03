@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:limpamais_application/api/diarist/diarist_api.dart';
 import 'package:limpamais_application/models/diarist.dart';
 import 'package:limpamais_application/models/diarist_details.dart';
-import 'package:limpamais_application/models/ratings.dart';
+import 'package:limpamais_application/models/rating.dart';
 import 'package:limpamais_application/models/user.dart';
 import 'package:limpamais_application/pages/service/request_appointment.dart';
 import 'package:limpamais_application/utils/nav.dart';
@@ -158,7 +158,7 @@ class _DiaristDetailsPageState extends State<DiaristDetailsPage> {
             ),
             itemCount: diaristInfos!.ratings!.length,
             itemBuilder: (BuildContext context, int index) {
-              Ratings rating = diaristInfos!.ratings![index];
+              Rating rating = diaristInfos!.ratings![index];
 
               return Card(
                 child: Container(

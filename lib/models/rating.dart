@@ -1,15 +1,15 @@
 import 'package:limpamais_application/models/user.dart';
 
-class Ratings {
+class Rating {
   int? id;
   User? user;
   int? rate;
   String? description;
   String? createdAt;
 
-  Ratings({required this.id, required this.user, required this.rate, required this.description, required this.createdAt});
+  Rating({required this.id, required this.user, required this.rate, required this.description, required this.createdAt});
 
-  Ratings.fromJson(Map<String, dynamic> json) {
+  Rating.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     user = json['user'] != null ? new User.fromJson(json['user']) : null;
     rate = json['rate'];

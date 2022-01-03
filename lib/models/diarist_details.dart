@@ -1,4 +1,4 @@
-import 'package:limpamais_application/models/ratings.dart';
+import 'package:limpamais_application/models/rating.dart';
 
 class DiaristDetails {
   int? id;
@@ -13,7 +13,7 @@ class DiaristDetails {
   int? dailyRate;
   String? note;
   String? urlPhoto;
-  List<Ratings>? ratings;
+  List<Rating>? ratings;
 
   DiaristDetails(
       {this.id,
@@ -44,9 +44,9 @@ class DiaristDetails {
     note = json['note'];
     urlPhoto = json['url_photo'];
     if (json['ratings'] != null) {
-      ratings = <Ratings>[];
+      ratings = <Rating>[];
       json['ratings'].forEach((v) {
-        ratings?.add(new Ratings.fromJson(v));
+        ratings?.add(new Rating.fromJson(v));
       });
     }
   }
