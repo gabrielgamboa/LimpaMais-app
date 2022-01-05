@@ -117,9 +117,6 @@ class _UserAppointmentsPageState extends State<UserAppointmentsPage> {
               : const TextInfo(
                   text: 'Sem agendamentos confirmados',
                 ),
-          const SizedBox(
-            height: 16,
-          ),
           const Align(
             alignment: Alignment.centerLeft,
             child: Text(
@@ -136,7 +133,8 @@ class _UserAppointmentsPageState extends State<UserAppointmentsPage> {
                         UserAppointment userAppointmentInfos =
                             userAppointmentsToBeConfirmed![index];
 
-                        final String appointmentDate = _formatAppointmentDate(userAppointmentInfos.appointmentDate!);
+                        final String appointmentDate = _formatAppointmentDate(
+                            userAppointmentInfos.appointmentDate!);
 
                         return Card(
                           color: Colors.grey[100],
@@ -158,12 +156,12 @@ class _UserAppointmentsPageState extends State<UserAppointmentsPage> {
                                     height: 12.0,
                                   ),
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
                                           "R\$${userAppointmentInfos.diarist!.dailyRate}"),
-                                      Text(
-                                          appointmentDate),
+                                      Text(appointmentDate),
                                     ],
                                   )
                                 ],
@@ -181,8 +179,8 @@ class _UserAppointmentsPageState extends State<UserAppointmentsPage> {
   }
 
   String _formatAppointmentDate(String data) {
-    final appointmentDate = DateFormat("dd/MM/yyyy")
-        .format(DateTime.parse(data));
+    final appointmentDate =
+        DateFormat("dd/MM/yyyy").format(DateTime.parse(data));
 
     return appointmentDate;
   }

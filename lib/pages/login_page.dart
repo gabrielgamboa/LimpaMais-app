@@ -11,6 +11,8 @@ import 'package:limpamais_application/widgets/app_button.dart';
 import 'package:limpamais_application/widgets/app_text.dart';
 
 class LoginPage extends StatefulWidget {
+  const LoginPage({Key? key}) : super(key: key);
+
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -31,7 +33,7 @@ class _LoginPageState extends State<LoginPage> {
 
     user.then((User? user) {
       if (user != null) {
-        push(context, HomePage(), replace: true);
+        push(context, const HomePage(), replace: true);
       }
     });
   }
@@ -45,7 +47,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _body() {
     return Stack(children: [
-      Container(
+      SizedBox(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         child: Image.asset(
@@ -78,7 +80,7 @@ class _LoginPageState extends State<LoginPage> {
                             textInputAction: TextInputAction.next,
                             nextFocus: _focusSenha,
                             validator: _validateEmail),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         // passa o focusNode o seu foco
@@ -87,7 +89,7 @@ class _LoginPageState extends State<LoginPage> {
                             focusNode: _focusSenha,
                             validator: _validatePassword,
                             password: true),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         AppButton(
@@ -95,10 +97,10 @@ class _LoginPageState extends State<LoginPage> {
                           onPressed: _onClickLogin,
                           showProgress: _showProgress,
                         ),
-                        SizedBox(height: 20,),
+                        const SizedBox(height: 20,),
                         GestureDetector(
                             onTap: () {},
-                            child: Text("Criar uma nova conta",
+                            child: const Text("Criar uma nova conta",
                                 style: TextStyle(
                                     fontSize: 18, color: Colors.white)))
                       ],

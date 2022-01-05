@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:limpamais_application/api/diarist/diarist_api.dart';
 import 'package:limpamais_application/models/diarist.dart';
 import 'package:limpamais_application/models/diarist_details.dart';
@@ -20,6 +21,7 @@ class DiaristDetailsPage extends StatefulWidget {
 
 class _DiaristDetailsPageState extends State<DiaristDetailsPage> {
   DiaristDetails? diaristInfos;
+  DateFormat dateFormat = DateFormat("dd/MM/yyyy");
 
   @override
   void initState() {
@@ -42,7 +44,7 @@ class _DiaristDetailsPageState extends State<DiaristDetailsPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("Detalhes"),
+        title: const Text("Detalhes"),
       ),
       body: _body(context),
     );
@@ -124,17 +126,17 @@ class _DiaristDetailsPageState extends State<DiaristDetailsPage> {
                 const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
             child: Column(
               children: [
-                Align(
+                const Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
                       "Avaliações:",
                       style: TextStyle(fontSize: 22),
                     )),
-                SizedBox(
+                const SizedBox(
                   height: 5,
                 ),
                 _loadRatings(),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 AppButton("Solicitar agendamento",
@@ -149,11 +151,11 @@ class _DiaristDetailsPageState extends State<DiaristDetailsPage> {
 
   Widget _loadRatings() {
     return diaristInfos!.ratings!.isEmpty
-        ? TextInfo(text: "Essa diarista não possui avaliações")
+        ? const TextInfo(text: "Essa diarista não possui avaliações")
         : ListView.separated(
             shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            separatorBuilder: (BuildContext context, int index) => SizedBox(
+            physics: const NeverScrollableScrollPhysics(),
+            separatorBuilder: (BuildContext context, int index) => const SizedBox(
               height: 10,
             ),
             itemCount: diaristInfos!.ratings!.length,
@@ -161,7 +163,8 @@ class _DiaristDetailsPageState extends State<DiaristDetailsPage> {
               Rating rating = diaristInfos!.ratings![index];
 
               return Card(
-                child: Container(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -175,7 +178,7 @@ class _DiaristDetailsPageState extends State<DiaristDetailsPage> {
                               TextInfo(text: "${rating.rate}"),
                             ],
                           ),
-                          TextInfo(text: "${rating.createdAt}")
+                          TextInfo(text: dateFormat.format(DateTime.parse(rating.createdAt!)))
                         ],
                       ),
                       TextInfo(text: rating.description!)

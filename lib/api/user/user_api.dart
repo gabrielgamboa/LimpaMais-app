@@ -24,7 +24,7 @@ class UserApi {
 
       Map<String, String> headers = {"Content-type": "application/json"};
 
-      var response = await http.get(url);
+      var response = await http.get(url, headers: headers);
 
       List<dynamic> list = convert.json.decode(response.body);
 
