@@ -7,7 +7,7 @@ class Diarist {
   String? number;
   String? city;
   String? state;
-  int? dailyRate;
+  double? dailyRate;
   String? note;
   String? password;
   String? urlPhoto;
@@ -36,7 +36,7 @@ class Diarist {
     number = json['number'];
     city = json['city'];
     state = json['state'];
-    dailyRate = json['daily_rate'];
+    dailyRate = json['daily_rate'].toDouble();
     note = json['note'];
     password = json['password'];
     urlPhoto = json['url_photo'];

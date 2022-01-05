@@ -115,7 +115,7 @@ class _HomePageState extends State<HomePage> {
                       const SizedBox(
                         height: 12.0,
                       ),
-                      Text("R\$${diarist.dailyRate}")
+                      Text("R\$${diarist.dailyRate!.toStringAsFixed(2)}")
                     ],
                   ),
                   trailing: const Icon(Icons.arrow_forward),

@@ -93,7 +93,7 @@ class _DiaristDetailsPageState extends State<DiaristDetailsPage> {
                 const SizedBox(
                   height: 5,
                 ),
-                TextInfo(text: "Valor: R\$${diaristInfos!.dailyRate!},00"),
+                TextInfo(text: "Valor: R\$${diaristInfos!.dailyRate!}"),
               ],
             ),
           ),

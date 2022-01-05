@@ -10,7 +10,7 @@ class DiaristDetails {
   String? city;
   String? averageRate;
   String? state;
-  int? dailyRate;
+  double? dailyRate;
   String? note;
   String? urlPhoto;
   List<Rating>? ratings;
@@ -40,7 +40,7 @@ class DiaristDetails {
     city = json['city'];
     averageRate = json['average_rate'];
     state = json['state'];
-    dailyRate = json['daily_rate'];
+    dailyRate = json['daily_rate'].toDouble();
     note = json['note'];
     urlPhoto = json['url_photo'];
     if (json['ratings'] != null) {
