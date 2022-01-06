@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'package:limpamais_application/api/api_response.dart';
+import 'package:limpamais_application/models/diarist.dart';
 import 'package:limpamais_application/models/user.dart';
 import 'package:http/http.dart' as http;
 
 class LoginApi {
-  static Future<ApiResponse<User>> login(String email, String password) async {
+  static Future<ApiResponse<dynamic>> login(String email, String password) async {
     try {
       Uri url =
           Uri.parse('http://10.0.2.2:3333/users/login');
@@ -23,7 +24,9 @@ class LoginApi {
       Map<String, dynamic> responseMap = json.decode(response.body);
 
       if (response.statusCode == 200) {
-        final User user = User.fromJson(responseMap);
+        final dynamic user;
+
+        user = responseMap.containsKey("daily_rate") ? Diarist.fromJson(responseMap) : User.fromJson(responseMap);
 
         user.save();
 

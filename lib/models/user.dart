@@ -65,7 +65,7 @@ class User {
     Prefs.setString("user.prefs", json);
   }
 
-  static Future<User?> get() async {
+  static Future<dynamic?> get() async {
     String userJson = await Prefs.getString("user.prefs");
 
     if (userJson.isEmpty) {

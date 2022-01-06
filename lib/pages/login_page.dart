@@ -1,6 +1,8 @@
 import 'package:limpamais_application/api/api_response.dart';
 import 'package:limpamais_application/api/login/login_api.dart';
+import 'package:limpamais_application/models/diarist.dart';
 import 'package:limpamais_application/models/user.dart';
+import 'package:limpamais_application/pages/diarist/diarist_home_page.dart';
 import 'package:limpamais_application/utils/alert.dart';
 import 'package:limpamais_application/utils/snackAlert.dart';
 import 'package:flutter/material.dart';
@@ -29,12 +31,17 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     super.initState();
 
-    Future<User?> user = User.get();
+    Future<dynamic?> user = User.get();
 
-    user.then((User? user) {
+    user.then((dynamic user) {
       if (user != null) {
-        push(context, const HomePage(), replace: true);
+        if (user is User) {
+          push(context, const HomePage(), replace: true);
+        } else {
+          push(context, DiaristHomePage(diaristId: user.id), replace: true);
+        }
       }
+     
     });
   }
 
@@ -66,7 +73,10 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset('assets/images/logo.png', height: 210,),
+                Image.asset(
+                  'assets/images/logo.png',
+                  height: 210,
+                ),
                 Form(
                   key: _formKey,
                   child: Container(
@@ -97,7 +107,9 @@ class _LoginPageState extends State<LoginPage> {
                           onPressed: _onClickLogin,
                           showProgress: _showProgress,
                         ),
-                        const SizedBox(height: 20,),
+                        const SizedBox(
+                          height: 20,
+                        ),
                         GestureDetector(
                             onTap: () {},
                             child: const Text("Criar uma nova conta",
@@ -132,9 +144,19 @@ class _LoginPageState extends State<LoginPage> {
     ApiResponse response = await LoginApi.login(email, password);
 
     if (response.ok!) {
-      User user = response.result;
+      dynamic user = response.result;
 
-      push(context, HomePage(), replace: true);
+      if (user is Diarist) {
+        push(
+            context,
+            DiaristHomePage(
+              diaristId: user.id,
+            ),
+            replace: true);
+      } else {
+        push(context, const HomePage(), replace: true);
+      }
+
       snackAlert(context, "Bem vindo, ${user.name}!");
     } else {
       alert(context, response.message!);

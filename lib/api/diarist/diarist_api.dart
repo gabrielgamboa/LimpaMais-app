@@ -1,6 +1,7 @@
 import 'package:limpamais_application/models/diarist.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
+import 'package:limpamais_application/models/diarist_appointment.dart';
 import 'package:limpamais_application/models/diarist_details.dart';
 
 class DiaristsApi {
@@ -33,5 +34,20 @@ class DiaristsApi {
     DiaristDetails diaristDetails = DiaristDetails.fromJson(diaristDetailsMap);
 
     return diaristDetails;
+  }
+  
+  static Future<List<DiaristAppointment>> getUserServices(int id) async {
+     Uri url =
+          Uri.parse('http://10.0.2.2:3333/diarists/$id/services');
+
+      Map<String, String> headers = {"Content-type": "application/json"};
+      var response = await http.get(url, headers: headers);
+
+      List<dynamic> list = convert.json.decode(response.body);
+
+    final List<DiaristAppointment> userAppointments =
+        list.map((userAppointment) => DiaristAppointment.fromJson(userAppointment)).toList();
+
+      return userAppointments;
   }
 }

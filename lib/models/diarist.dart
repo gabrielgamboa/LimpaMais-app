@@ -1,3 +1,6 @@
+import 'dart:convert' as convert;
+import 'package:limpamais_application/utils/prefs.dart';
+
 class Diarist {
   int? id;
   String? name;
@@ -57,5 +60,27 @@ class Diarist {
     data['password'] = this.password;
     data['url_photo'] = this.urlPhoto;
     return data;
+  }
+
+  static void clear() {
+    Prefs.setString("user.prefs", "");
+  }
+
+  void save() {
+    Map map = toJson();
+    String json = convert.json.encode(map);
+    Prefs.setString("diarist.prefs", json);
+  }
+
+  static Future<dynamic?> get() async {
+    String diaristJson = await Prefs.getString("diarist.prefs");
+
+    if (diaristJson.isEmpty) {
+      return null;
+    }
+
+    Map<String, dynamic> userMap = convert.json.decode(diaristJson);
+    Diarist diarist = Diarist.fromJson(userMap);
+    return diarist;
   }
 }

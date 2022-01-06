@@ -1,49 +1,51 @@
 import 'package:flutter/material.dart';
+import 'package:limpamais_application/api/diarist/diarist_api.dart';
 import 'package:limpamais_application/api/user/user_api.dart';
+import 'package:limpamais_application/models/diarist_appointment.dart';
 import 'package:limpamais_application/models/user.dart';
 import 'package:limpamais_application/models/user_appointments.dart';
 import 'package:limpamais_application/pages/service/request_appointment.dart';
 import 'package:limpamais_application/utils/nav.dart';
 import 'package:limpamais_application/widgets/app_button.dart';
+import 'package:limpamais_application/widgets/diarist/diarist_drawer_list.dart';
 import 'package:limpamais_application/widgets/text_info.dart';
 import 'package:intl/intl.dart';
 
-class UserAppointmentsPage extends StatefulWidget {
-  final int? userId;
+class DiaristHomePage extends StatefulWidget {
+  final int? diaristId;
 
-  const UserAppointmentsPage({Key? key, required this.userId})
-      : super(key: key);
+  const DiaristHomePage({Key? key, required this.diaristId}) : super(key: key);
 
   @override
-  _UserAppointmentsPageState createState() => _UserAppointmentsPageState();
+  _DiaristHomePageState createState() => _DiaristHomePageState();
 }
 
-class _UserAppointmentsPageState extends State<UserAppointmentsPage> {
-  List<UserAppointment>? userAppointmentsConfirmed;
-  List<UserAppointment>? userAppointmentsToBeConfirmed;
+class _DiaristHomePageState extends State<DiaristHomePage> {
+  List<DiaristAppointment>? diaristAppointmentsConfirmed;
+  List<DiaristAppointment>? diaristAppointmentsToBeConfirmed;
 
   @override
   void initState() {
     super.initState();
-    _loadUserAppointments();
+    _loadDiaristAppointments();
   }
 
-  void _loadUserAppointments() async {
-    List<UserAppointment>? userAppointments =
-        await UserApi.getUserServices(widget.userId!);
+  void _loadDiaristAppointments() async {
+    List<DiaristAppointment>? diaristAppointments =
+        await DiaristsApi.getUserServices(widget.diaristId!);
 
-    List<UserAppointment>? confirmedAppointments = userAppointments
+    List<DiaristAppointment>? confirmedAppointments = diaristAppointments
         .where((userAppointment) =>
             userAppointment.status!.contains("scheduled and not rated"))
         .toList();
 
-    List<UserAppointment>? toBeConfirmedAppointments = userAppointments
+    List<DiaristAppointment>? toBeConfirmedAppointments = diaristAppointments
         .where((userAppointment) => userAppointment.status!.contains("created"))
         .toList();
 
     setState(() {
-      userAppointmentsConfirmed = confirmedAppointments;
-      userAppointmentsToBeConfirmed = toBeConfirmedAppointments;
+      diaristAppointmentsConfirmed = confirmedAppointments;
+      diaristAppointmentsToBeConfirmed = toBeConfirmedAppointments;
     });
   }
 
@@ -52,15 +54,16 @@ class _UserAppointmentsPageState extends State<UserAppointmentsPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("Agendamentos"),
+        title: const Text("LimpaMais"),
       ),
+      drawer: DiaristDrawer(),
       body: _body(context),
     );
   }
 
   Widget _body(BuildContext context) {
-    if (userAppointmentsConfirmed == null ||
-        userAppointmentsToBeConfirmed == null) {
+    if (diaristAppointmentsConfirmed == null ||
+        diaristAppointmentsToBeConfirmed == null) {
       return const Center(
         child: CircularProgressIndicator(),
       );
@@ -74,41 +77,43 @@ class _UserAppointmentsPageState extends State<UserAppointmentsPage> {
           const Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              "Confirmados:",
+              "Meus agendamentos:",
               style: TextStyle(fontSize: 22),
             ),
           ),
-          userAppointmentsConfirmed!.isNotEmpty
+          diaristAppointmentsConfirmed!.isNotEmpty
               ? Expanded(
                   child: ListView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
-                      itemCount: userAppointmentsConfirmed!.length,
+                      itemCount: diaristAppointmentsConfirmed!.length,
                       itemBuilder: (context, index) {
-                        UserAppointment userAppointmentInfos =
-                            userAppointmentsConfirmed![index];
+                        DiaristAppointment diaristAppointmentInfos =
+                            diaristAppointmentsConfirmed![index];
+
+                        final String appointmentDate = _formatAppointmentDate(
+                            diaristAppointmentInfos.appointmentDate!);
 
                         return Card(
                           color: Colors.grey[100],
                           child: Container(
                             padding: const EdgeInsets.all(16),
                             child: ListTile(
-                              leading: Image.network(userAppointmentInfos
-                                      .diarist!.urlPhoto ??
+                              leading: Image.network(diaristAppointmentInfos
+                                      .user!.urlPhoto ??
                                   "https://www.pikpng.com/pngl/m/80-805523_default-avatar-svg-png-icon-free-download-264157.png"),
-                              title: Text(userAppointmentInfos.diarist!.name!),
+                              title: Text(diaristAppointmentInfos.user!.name!),
                               subtitle: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "${userAppointmentInfos.diarist!.city}, ${userAppointmentInfos.diarist!.state}",
+                                    "${diaristAppointmentInfos.user!.city}, ${diaristAppointmentInfos.user!.state}",
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                   const SizedBox(
                                     height: 12.0,
                                   ),
-                                  Text(
-                                      "R\$${userAppointmentInfos.diarist!.dailyRate}")
+                                  Text(appointmentDate)
                                 ],
                               ),
                             ),
@@ -126,14 +131,14 @@ class _UserAppointmentsPageState extends State<UserAppointmentsPage> {
             ),
           ),
           Expanded(
-              child: userAppointmentsToBeConfirmed!.isNotEmpty
+              child: diaristAppointmentsToBeConfirmed!.isNotEmpty
                   ? ListView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
-                      itemCount: userAppointmentsToBeConfirmed!.length,
+                      itemCount: diaristAppointmentsToBeConfirmed!.length,
                       itemBuilder: (context, index) {
-                        UserAppointment userAppointmentInfos =
-                            userAppointmentsToBeConfirmed![index];
+                        DiaristAppointment userAppointmentInfos =
+                            diaristAppointmentsToBeConfirmed![index];
 
                         final String appointmentDate = _formatAppointmentDate(
                             userAppointmentInfos.appointmentDate!);
@@ -144,36 +149,30 @@ class _UserAppointmentsPageState extends State<UserAppointmentsPage> {
                             padding: const EdgeInsets.all(16),
                             child: ListTile(
                               leading: Image.network(userAppointmentInfos
-                                      .diarist!.urlPhoto ??
+                                      .user!.urlPhoto ??
                                   "https://www.pikpng.com/pngl/m/80-805523_default-avatar-svg-png-icon-free-download-264157.png"),
-                              title: Text(userAppointmentInfos.diarist!.name!),
+                              title: Text(userAppointmentInfos.user!.name!),
                               subtitle: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "${userAppointmentInfos.diarist!.city}, ${userAppointmentInfos.diarist!.state}",
+                                    "${userAppointmentInfos.user!.city}, ${userAppointmentInfos.user!.state}",
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                   const SizedBox(
                                     height: 12.0,
                                   ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                          "R\$${userAppointmentInfos.diarist!.dailyRate}"),
-                                      Text(appointmentDate),
-                                    ],
-                                  )
+                                  Text(appointmentDate)
                                 ],
                               ),
+                              trailing: const Icon(Icons.arrow_forward),
+                              onTap: () => _onClickAppointment(context),
                             ),
                           ),
                         );
                       })
                   : const TextInfo(
-                      text: 'Sem agendamentos confirmados',
+                      text: 'Sem confirmações necessárias',
                     )),
         ],
       ),
@@ -185,5 +184,9 @@ class _UserAppointmentsPageState extends State<UserAppointmentsPage> {
         DateFormat("dd/MM/yyyy").format(DateTime.parse(data));
 
     return appointmentDate;
+  }
+
+  void _onClickAppointment(BuildContext context) {
+    // push(context, const ServiceDetails());
   }
 }

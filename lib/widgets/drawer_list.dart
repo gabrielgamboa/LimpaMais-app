@@ -10,7 +10,7 @@ class DrawerList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future<User?> userFuture = User.get();
+    final userFuture = User.get();
 
     return SafeArea(
       child: Drawer(
