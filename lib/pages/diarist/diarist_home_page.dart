@@ -5,6 +5,7 @@ import 'package:limpamais_application/models/diarist_appointment.dart';
 import 'package:limpamais_application/models/user.dart';
 import 'package:limpamais_application/models/user_appointments.dart';
 import 'package:limpamais_application/pages/service/request_appointment.dart';
+import 'package:limpamais_application/pages/service/service_details_page.dart';
 import 'package:limpamais_application/utils/nav.dart';
 import 'package:limpamais_application/widgets/app_button.dart';
 import 'package:limpamais_application/widgets/diarist/diarist_drawer_list.dart';
@@ -166,7 +167,7 @@ class _DiaristHomePageState extends State<DiaristHomePage> {
                                 ],
                               ),
                               trailing: const Icon(Icons.arrow_forward),
-                              onTap: () => _onClickAppointment(context),
+                              onTap: () => _onClickAppointment(context, userAppointmentInfos),
                             ),
                           ),
                         );
@@ -186,7 +187,7 @@ class _DiaristHomePageState extends State<DiaristHomePage> {
     return appointmentDate;
   }
 
-  void _onClickAppointment(BuildContext context) {
-    // push(context, const ServiceDetails());
+  void _onClickAppointment(BuildContext context, DiaristAppointment userAppointmentInfos) {
+    push(context, ServiceDetailsPage(serviceId: userAppointmentInfos.id!,));
   }
 }
