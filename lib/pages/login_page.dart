@@ -147,6 +147,7 @@ class _LoginPageState extends State<LoginPage> {
       dynamic user = response.result;
 
       if (user is Diarist) {
+        user.save();
         push(
             context,
             DiaristHomePage(
@@ -154,6 +155,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
             replace: true);
       } else {
+        user.save();
         push(context, const HomePage(), replace: true);
       }
 

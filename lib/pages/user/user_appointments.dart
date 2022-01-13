@@ -88,6 +88,9 @@ class _UserAppointmentsPageState extends State<UserAppointmentsPage> {
                         UserAppointment userAppointmentInfos =
                             userAppointmentsConfirmed![index];
 
+                        final String appointmentDate = _formatAppointmentDate(
+                            userAppointmentInfos.appointmentDate!);
+
                         return Card(
                           color: Colors.grey[100],
                           child: Container(
@@ -107,8 +110,15 @@ class _UserAppointmentsPageState extends State<UserAppointmentsPage> {
                                   const SizedBox(
                                     height: 12.0,
                                   ),
-                                  Text(
-                                      "R\$${userAppointmentInfos.diarist!.dailyRate}")
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                          "R\$${userAppointmentInfos.diarist!.dailyRate}"),
+                                      Text(appointmentDate)
+                                    ],
+                                  )
                                 ],
                               ),
                             ),

@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:limpamais_application/api/api_response.dart';
 import 'package:limpamais_application/api/service/service_api.dart';
+import 'package:limpamais_application/models/diarist.dart';
 import 'package:limpamais_application/models/service_details.dart';
+import 'package:limpamais_application/pages/diarist/diarist_home_page.dart';
+import 'package:limpamais_application/utils/alert.dart';
+import 'package:limpamais_application/utils/nav.dart';
 import 'package:limpamais_application/widgets/text_info.dart';
 
 class ServiceDetailsPage extends StatefulWidget {
@@ -54,21 +58,70 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
         width: MediaQuery.of(context).size.width,
         padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
         child: Column(children: [
-          CircleAvatar(child: Image.network(serviceDetails.user?.urlPhoto ?? "https://www.pikpng.com/pngl/m/80-805523_default-avatar-svg-png-icon-free-download-264157.png"), radius: 60,),
+          SizedBox(
+            height: 10,
+          ),
+          CircleAvatar(
+            child: Image.network(serviceDetails.user?.urlPhoto ??
+                "https://www.pikpng.com/pngl/m/80-805523_default-avatar-svg-png-icon-free-download-264157.png"),
+            radius: 60,
+          ),
+          SizedBox(
+            height: 10,
+          ),
           TextInfo(text: serviceDetails.user!.name!),
-          SizedBox(height: 5,),
-          TextInfo(text: "${serviceDetails.user!.city!}, ${serviceDetails.user!.state!}"),
-          SizedBox(height: 5,),
+          SizedBox(
+            height: 10,
+          ),
+          TextInfo(
+              text:
+                  "${serviceDetails.user!.city!}, ${serviceDetails.user!.state!}"),
+          SizedBox(
+            height: 10,
+          ),
           TextInfo(text: serviceDetails.user!.street!),
-          SizedBox(height: 5,),
-          TextInfo(text: serviceDetails.user!.street!),
-          SizedBox(height: 5,),
+          SizedBox(
+            height: 10,
+          ),
           TextInfo(text: serviceDetails.user!.phone!),
-          SizedBox(height: 5,),
-          TextInfo(text: DateFormat("dd/MM/yyyy").format(DateTime.parse(serviceDetails.appointmentDate!))),
-          SizedBox(height: 22,),
-          Row(children: [],)
-
+          SizedBox(
+            height: 10,
+          ),
+          TextInfo(
+              text: DateFormat("dd/MM/yyyy")
+                  .format(DateTime.parse(serviceDetails.appointmentDate!))),
+          SizedBox(
+            height: 50,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              FloatingActionButton(
+                onPressed: () async {
+                  ApiResponse response =
+                      await ServiceApi.updateToRejected(serviceDetails.id!);
+                  if (response.ok!) {
+                    dynamic  user = await Diarist.get();
+                    push(context, DiaristHomePage(diaristId: user.id), replace: true);
+                    alert(context, response.result);
+                  }
+                },
+                child: const Icon(Icons.cancel),
+              ),
+              FloatingActionButton(
+                onPressed: () async {
+                  ApiResponse response =
+                      await ServiceApi.updateToScheduled(serviceDetails.id!);
+                  if (response.ok!) {
+                    dynamic  user = await Diarist.get();
+                    push(context, DiaristHomePage(diaristId: user.id), replace: true);
+                    alert(context, response.result);
+                  }
+                },
+                child: const Icon(Icons.done),
+              )
+            ],
+          )
         ]));
   }
 }
