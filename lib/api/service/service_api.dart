@@ -93,7 +93,7 @@ class ServiceApi {
       String stringParams = json.encode(params);
 
       try {
-        var response = await http.post(url, body: stringParams, headers: headers);
+        var response = await http.patch(url, body: stringParams, headers: headers);
 
       if (response.statusCode == 204) {
         return ApiResponse.ok("Agendamento rejeitado!");
