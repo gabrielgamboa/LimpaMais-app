@@ -5,6 +5,7 @@ import 'package:limpamais_application/models/user.dart';
 import 'package:limpamais_application/pages/diarist/diarist_home_page.dart';
 import 'package:limpamais_application/utils/alert.dart';
 import 'package:limpamais_application/utils/snackAlert.dart';
+import 'package:limpamais_application/pages/register_page.dart';
 import 'package:flutter/material.dart';
 
 import 'package:limpamais_application/utils/nav.dart';
@@ -111,7 +112,9 @@ class _LoginPageState extends State<LoginPage> {
                           height: 20,
                         ),
                         GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              push(context, const RegisterPage());
+                            },
                             child: const Text("Criar uma nova conta",
                                 style: TextStyle(
                                     fontSize: 18, color: Colors.white)))
