@@ -111,6 +111,7 @@ class _DiaristHomePageState extends State<DiaristHomePage> {
                                     "${diaristAppointmentInfos.user!.city}, ${diaristAppointmentInfos.user!.state}",
                                     overflow: TextOverflow.ellipsis,
                                   ),
+                                  Text(diaristAppointmentInfos.user!.phone!),
                                   const SizedBox(
                                     height: 12.0,
                                   ),
@@ -160,6 +161,7 @@ class _DiaristHomePageState extends State<DiaristHomePage> {
                                     "${userAppointmentInfos.user!.city}, ${userAppointmentInfos.user!.state}",
                                     overflow: TextOverflow.ellipsis,
                                   ),
+                                  Text(userAppointmentInfos.user!.phone!),
                                   const SizedBox(
                                     height: 12.0,
                                   ),

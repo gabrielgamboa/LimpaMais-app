@@ -107,6 +107,7 @@ class _UserAppointmentsPageState extends State<UserAppointmentsPage> {
                                     "${userAppointmentInfos.diarist!.city}, ${userAppointmentInfos.diarist!.state}",
                                     overflow: TextOverflow.ellipsis,
                                   ),
+                                  Text(userAppointmentInfos.diarist!.phone!),
                                   const SizedBox(
                                     height: 12.0,
                                   ),
@@ -164,6 +165,7 @@ class _UserAppointmentsPageState extends State<UserAppointmentsPage> {
                                     "${userAppointmentInfos.diarist!.city}, ${userAppointmentInfos.diarist!.state}",
                                     overflow: TextOverflow.ellipsis,
                                   ),
+                                  Text(userAppointmentInfos.diarist!.phone!),
                                   const SizedBox(
                                     height: 12.0,
                                   ),
