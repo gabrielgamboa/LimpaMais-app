@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:limpamais_application/api/api_response.dart';
+import 'package:limpamais_application/api/diarist/diarist_api.dart';
+import 'package:limpamais_application/api/user/user_api.dart';
+import 'package:limpamais_application/models/user.dart';
+import 'package:limpamais_application/pages/login_page.dart';
+import 'package:limpamais_application/utils/alert.dart';
+import 'package:limpamais_application/utils/nav.dart';
 import 'package:limpamais_application/widgets/app_button.dart';
 import 'package:limpamais_application/widgets/app_text.dart';
 
@@ -119,6 +126,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   AppText(
                     "Nome completo",
                     controller: _tName,
+                    validator: _validateField,
                   ),
                   const SizedBox(
                     height: 10,
@@ -126,19 +134,31 @@ class _RegisterPageState extends State<RegisterPage> {
                   AppText(
                     "Celular",
                     controller: _tPhone,
+                    validator: _validateField,
                   ),
                   const SizedBox(
                     height: 10,
                   ),
-                  AppText("E-mail", controller: _tEmail),
+                  AppText("E-mail",
+                      controller: _tEmail, validator: _validateEmail),
                   const SizedBox(
                     height: 10,
                   ),
-                  AppText("Senha", controller: _tPassword),
+                  AppText(
+                    "Senha",
+                    controller: _tPassword,
+                    validator: _validateField,
+                    password: true,
+                  ),
                   const SizedBox(
                     height: 10,
                   ),
-                  AppText("Confirmar senha", controller: _tConfirmPassword),
+                  AppText(
+                    "Confirmar senha",
+                    controller: _tConfirmPassword,
+                    validator: _validateConfirmPassword,
+                    password: true,
+                  ),
                   const SizedBox(
                     height: 20,
                   ),
@@ -157,19 +177,35 @@ class _RegisterPageState extends State<RegisterPage> {
                   const SizedBox(
                     height: 5,
                   ),
-                  AppText("Endereço", controller: _tStreet),
+                  AppText(
+                    "Endereço",
+                    controller: _tStreet,
+                    validator: _validateField,
+                  ),
                   const SizedBox(
                     height: 10,
                   ),
-                  AppText("Número", controller: _tNumber),
+                  AppText(
+                    "Número",
+                    controller: _tNumber,
+                    validator: _validateField,
+                  ),
                   const SizedBox(
                     height: 10,
                   ),
-                  AppText("Cidade", controller: _tCity),
+                  AppText(
+                    "Cidade",
+                    controller: _tCity,
+                    validator: _validateField,
+                  ),
                   const SizedBox(
                     height: 10,
                   ),
-                  AppText("Estado", controller: _tState),
+                  AppText(
+                    "Estado",
+                    controller: _tState,
+                    validator: _validateField,
+                  ),
                   const SizedBox(
                     height: 20,
                   ),
@@ -190,8 +226,11 @@ class _RegisterPageState extends State<RegisterPage> {
                         const SizedBox(
                           height: 5,
                         ),
-                        AppText("Valor da diária (R\$)",
-                            controller: _tDailyRate),
+                        AppText(
+                          "Valor da diária (R\$)",
+                          controller: _tDailyRate,
+                          validator: _validateField,
+                        ),
                         const SizedBox(
                           height: 5,
                         ),
@@ -205,7 +244,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 : Container(),
             AppButton(
               'Cadastrar',
-              onPressed: _onClickLogin,
+              onPressed: _onClickRegister,
             ),
           ],
         ),
@@ -213,11 +252,64 @@ class _RegisterPageState extends State<RegisterPage> {
     ));
   }
 
-  void _onClickLogin() async {
+  void _onClickRegister() async {
     bool formOk = _formKey.currentState!.validate();
 
-    if (!formOk)
+    if (!formOk) {
       return;
-    
+    }
+
+    String name = _tName.text;
+    String email = _tEmail.text;
+    String phone = _tPhone.text;
+    String password = _tPassword.text;
+    String street = _tStreet.text;
+    String number = _tNumber.text;
+    String city = _tCity.text;
+    String state = _tState.text;
+    String dailyRate = _tDailyRate.text;
+    String note = _tNote.text;
+
+    if (_userType == "user") {
+      String response = await UserApi.createUser(
+          name, email, password, phone, street, number, city, state);
+
+      push(context, const LoginPage(), replace: true);
+      alert(context, response);
+    } else {
+
+      String response = await DiaristsApi.createUser(
+          name, email, password, phone, street, number, city, state, dailyRate, note);
+      
+      push(context, const LoginPage(), replace: true);
+      alert(context, response);
+    }
+  }
+
+  String? _validateEmail(String? text) {
+    if (text!.isEmpty) {
+      return "Campo obrigatório.";
+    }
+
+    const pattern = r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$';
+    final regex = RegExp(pattern);
+
+    if (!regex.hasMatch(text)) {
+      return "Digite um e-mail válido.";
+    }
+
+    return null;
+  }
+
+  String? _validateField(String? text) {
+    if (text!.isEmpty) {
+      return "Campo obrigatório.";
+    }
+  }
+
+  String? _validateConfirmPassword(String? text) {
+    if (text != _tPassword.text) {
+      return "O campo precisa ter a mesma senha do campo acima.";
+    }
   }
 }
