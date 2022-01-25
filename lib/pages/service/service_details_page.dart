@@ -62,9 +62,9 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
             height: 10,
           ),
           CircleAvatar(
-            child: Image.network(serviceDetails.user?.urlPhoto ??
-                "https://www.pikpng.com/pngl/m/80-805523_default-avatar-svg-png-icon-free-download-264157.png"),
-            radius: 60,
+            backgroundImage: NetworkImage(serviceDetails.user?.urlPhoto ??
+                      "https://www.pikpng.com/pngl/m/80-805523_default-avatar-svg-png-icon-free-download-264157.png"),
+                  radius: 60,
           ),
           SizedBox(
             height: 10,

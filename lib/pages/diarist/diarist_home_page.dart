@@ -125,6 +125,7 @@ class _DiaristHomePageState extends State<DiaristHomePage> {
               : const TextInfo(
                   text: 'Sem agendamentos confirmados',
                 ),
+                SizedBox(height: 15,),
           const Align(
             alignment: Alignment.centerLeft,
             child: Text(
